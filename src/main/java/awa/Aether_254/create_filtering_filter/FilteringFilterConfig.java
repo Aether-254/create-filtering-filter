@@ -1,4 +1,4 @@
-package awa.Aether_254.create_regex_filter;
+package awa.Aether_254.create_filtering_filter;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -7,12 +7,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import net.neoforged.fml.loading.FMLPaths;
 
-public final class RegexFilterConfig {
+public final class FilteringFilterConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final Path PATH = FMLPaths.CONFIGDIR.get().resolve("create_regex_filter.json");
+    private static final Path PATH = FMLPaths.CONFIGDIR.get().resolve("create_filtering_filter.json");
     private static Data data = new Data();
 
-    private RegexFilterConfig() {
+    private FilteringFilterConfig() {
     }
 
     public static Data get() {
@@ -41,7 +41,6 @@ public final class RegexFilterConfig {
 
     public static final class Data {
         public boolean enabled = true;
-        public boolean caseSensitive = true;
-        public boolean fullMatch = true;
+        public boolean matchInternalData = false;
     }
 }
