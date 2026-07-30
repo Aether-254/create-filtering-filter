@@ -39,7 +39,7 @@ public final class FilteringFilterItem extends ListFilterItem {
                 return false;
             boolean matched = filters.stream()
                 .filter(stack -> stack.getItem() instanceof FilterItem)
-                .anyMatch(stack -> FilteringFilterConfig.get().matchInternalData
+                .anyMatch(stack -> (FilteringFilterConfig.get().matchInternalData || matchData)
                     ? ItemStack.isSameItemSameComponents(stack, candidate)
                     : ItemStack.isSameItem(stack, candidate));
             return blacklist != matched;
