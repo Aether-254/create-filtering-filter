@@ -24,6 +24,7 @@ public final class FilteringFilterItem extends ListFilterItem {
     private static final class DirectFilterStack extends FilterItemStack {
         private final List<ItemStack> filters = new ArrayList<>();
         private final boolean blacklist;
+        private final boolean respectData;
 
         private DirectFilterStack(ItemStack filter) {
             super(filter);
@@ -31,6 +32,7 @@ public final class FilteringFilterItem extends ListFilterItem {
                 filter.getOrDefault(AllDataComponents.FILTER_ITEMS, ItemContainerContents.EMPTY);
             contents.nonEmptyItemsCopy().forEach(filters::add);
             blacklist = filter.getOrDefault(AllDataComponents.FILTER_ITEMS_BLACKLIST, false);
+            respectData = filter.getOrDefault(AllDataComponents.FILTER_ITEMS_RESPECT_NBT, false);
         }
 
         @Override
@@ -39,9 +41,8 @@ public final class FilteringFilterItem extends ListFilterItem {
                 return false;
             boolean matched = filters.stream()
                 .filter(stack -> stack.getItem() instanceof FilterItem)
-                .anyMatch(stack -> (FilteringFilterConfig.get().matchInternalData || matchData)
-                    ? ItemStack.isSameItemSameComponents(stack, candidate)
-                    : ItemStack.isSameItem(stack, candidate));
+                .anyMatch(stack -> FilterItem.testDirect(stack, candidate,
+                    FilteringFilterConfig.get().matchInternalData || respectData || matchData));
             return blacklist != matched;
         }
 
